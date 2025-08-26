@@ -3,8 +3,8 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface ICircuit extends Document {
   name: string;
   location_coords: {
-    lat: { type: Number; require: true };
-    lon: { type: Number; require: true };
+    lat: Number;
+    lon: Number;
   };
   location_url: string;
   length_km: Number;
@@ -19,6 +19,8 @@ export interface ICircuit extends Document {
     maxWind_mps: Number;
     chanceOfRain: Number;
   };
+  images: string[];
+  thumbnail: string;
   isDelete?: boolean;
   deleteAt?: Date;
   updated_at: Date;
@@ -64,6 +66,8 @@ const CircuitSchema: Schema = new Schema<ICircuit>({
     maxWind_mps: {type: Number, default: 0},
     chanceOfRain: {type: Number, default: 0},
   },
+  images: {type: [String], default:[], required: true},
+  thumbnail: {type: String, required: true},
   isDelete: { type: Boolean, default: false },
   deleteAt: { type: Date },
   updated_at: { type: Date, default: Date.now },
