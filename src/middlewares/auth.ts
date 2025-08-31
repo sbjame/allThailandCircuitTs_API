@@ -1,4 +1,3 @@
-//todo create auth logic
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 

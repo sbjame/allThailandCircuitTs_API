@@ -50,7 +50,7 @@ export const registerUser = async (
   try {
     const { user_Name, first_Name, last_Name, email, password } = req.body;
 
-    if (!(user_Name && first_Name && last_Name && email))
+    if (!(user_Name && first_Name && last_Name && email && password))
       return res.status(400).json({ error: "All input is required" });
 
     const oldUer = await User.findOne({ $or: [{ email }, { user_Name }] });
@@ -101,7 +101,7 @@ export const updatePassword = async (
     if (!existingUser) return res.status(400).json({ error: "User not found" });
     const isMatch = await bcrypt.compare(old_password, existingUser?.password);
     if (!isMatch)
-      return res.status(403).json({ error: "Old password doesn't match" });
+      return res.status(403).json({ error: "Old password is incorrect" });
 
     const hashedNewPassword = await bcrypt.hash(new_password, 12);
     existingUser.password = hashedNewPassword;
@@ -194,7 +194,7 @@ export const loginUser = async (
       return res.status(200).json({ success: true, user, token });
     }
 
-    res.status(400).json({ error: "Email or Password Does Not Match" });
+    res.status(400).json({ error: "Username or password is incorrect." });
   } catch (err) {
     next(err);
   }
@@ -211,9 +211,6 @@ export const changeRole = async (
     const { role } = req.body;
     const updateData = req.body;
     const existingUser = await User.findById(id);
-    console.log("_id: ", id)
-    console.log("role: ", role)
-    console.log("existingUser: ", existingUser)
     if (!existingUser)
       return res.status(404).json({ errorr: "User not found" });
     const invalidField = Object.keys(updateData).find(

@@ -3,7 +3,7 @@ import { Circuit } from "../models/Circuit";
 import { upload } from "../middlewares/multer";
 import cloudinary from "../utils/cloudinary";
 
-//!Real All Circuit
+//!Read All Circuit
 export const getCircuit = async (
   req: Request,
   res: Response,
@@ -17,69 +17,51 @@ export const getCircuit = async (
   }
 };
 
-//!Create Circuit
-// export const createCircuit = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const circuit = await Circuit.create(req.body);
-//     res.status(201).json(circuit);
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
 //!Create Circuit with images
 export const createCircuit = async (req: Request, res: Response) => {
   try {
-    const files = req.files as { 
-      [fieldname: string]: Express.Multer.File[] 
+    const files = req.files as {
+      [fieldname: string]: Express.Multer.File[];
     };
 
     const uploadedImagesUrls: string[] = [];
     let uploadedThumbnail = "";
 
-    // Upload images (array)
-    if (files.images) {
-      for (const file of files.images) {
-        const result = await new Promise<any>((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream(
-            { folder: "circuits/images" },
-            (error, result) => {
-              if (error) reject(error);
-              else resolve(result);
-            }
-          );
-          stream.end(file.buffer);
-        });
-        uploadedImagesUrls.push(result.secure_url);
-      }
-    }
-
-    // Upload thumbnail (single)
-    if (files.thumbnail && files.thumbnail.length > 0) {
-      const thumbFile = files.thumbnail[0];
-      if(!thumbFile) throw new Error("Thumbnail file missing");
-      const result = await new Promise<any>((resolve, reject) => {
+    const uploadToCloudinary = (file: Express.Multer.File, folder: string) => {
+      return new Promise<any>((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
-          { folder: "circuits/thumbnails" },
+          { folder },
           (error, result) => {
             if (error) reject(error);
             else resolve(result);
           }
         );
-        stream.end(thumbFile.buffer);
+        stream.end(file.buffer);
       });
-      uploadedThumbnail = result.secure_url;
+    };
+
+    if (files.images) {
+      for (const file of files.images) {
+        const uploaded = await uploadToCloudinary(file, "circuits/images");
+        uploadedImagesUrls.push(uploaded.secure_url);
+      }
     }
 
+    if (files.thumbnail && files.thumbnail.length > 0) {
+      const thumbFile = files.thumbnail[0];
+      if (!thumbFile) throw new Error("Thumbnail file missing");
+
+      const uploaded = await uploadToCloudinary(
+        thumbFile,
+        "circuits/thumbnails"
+      );
+      uploadedThumbnail = uploaded.secure_url;
+    }
     const circuit = new Circuit({
       name: req.body.name,
       location_coords: {
-        lat: req.body.location_coords.lat,
-        lon: req.body.location_coords.lon,
+        lat: parseFloat(req.body.lat),
+        lon: parseFloat(req.body.lon),
       },
       location_url: req.body.location_url,
       length_km: req.body.length_km,
@@ -92,6 +74,7 @@ export const createCircuit = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "Created Circuit", circuit });
   } catch (error: any) {
+    console.error("Upload error:", error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -107,21 +90,101 @@ export const updateCircuit = async (
     const updateData = req.body;
 
     const existingCircuit = await Circuit.findById(id);
-    if (!existingCircuit)
-      return res.status(404).json({ error: "Cirscuit not found" });
+    if (!existingCircuit) {
+      return res.status(404).json({ error: "Circuit not found" });
+    }
 
-    const invalidField = Object.keys(updateData).find(
-      (key) => !Object.keys(Circuit.schema.obj).includes(key)
-    );
-    if (invalidField) return res.status(400).json({ error: `Invalid field` });
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
-    const updatedCircuit = await Circuit.findByIdAndUpdate(
-      id,
-      { $set: updateData },
-      { new: true, runValidators: true }
-    );
+    //! ฟังก์ชันอัปโหลดไป Cloudinary
+    const uploadToCloudinary = (file: Express.Multer.File, folder: string) => {
+      return new Promise<any>((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        stream.end(file.buffer); // ต้องใช้ multer.memoryStorage()
+      });
+    };
+
+    const updateOps: any = {};
+
+    //! --- Remove thumbnail ถ้ามี flag ---
+    if (updateData.removeThumbnail === "true") {
+      if (!updateOps.$set) updateOps.$set = {};
+      updateOps.$set.thumbnail = "";
+      existingCircuit.thumbnail = "";
+    }
+
+    //! --- Upload thumbnail ใหม่ ---
+    if (files?.thumbnail && files.thumbnail.length > 0) {
+      const thumbFile = files.thumbnail[0] as Express.Multer.File;
+      const uploadedThumb = await uploadToCloudinary(
+        thumbFile,
+        "circuits/thumbnails"
+      );
+      if (!updateOps.$set) updateOps.$set = {};
+      updateOps.$set.thumbnail = uploadedThumb.secure_url;
+    }
+
+    //! --- จัดการ images รวม ลบและเพิ่มพร้อมกัน ---
+    let finalImages = [...existingCircuit.images];
+
+    //! ลบรูปที่ต้องการลบ
+    if (updateData.removeImages) {
+      let imgsToRemove: string[] = [];
+      try {
+        imgsToRemove = JSON.parse(updateData.removeImages);
+      } catch {
+        imgsToRemove = [updateData.removeImages];
+      }
+      finalImages = finalImages.filter((img) => !imgsToRemove.includes(img));
+    }
+
+    //! อัปโหลดรูปใหม่
+    if (files?.images && files.images.length > 0) {
+      const uploadedImages: string[] = [];
+      for (const file of files.images) {
+        const uploaded = await uploadToCloudinary(file, "circuits/images");
+        uploadedImages.push(uploaded.secure_url);
+      }
+      finalImages = [...finalImages, ...uploadedImages];
+      if (finalImages.length > 5) {
+        return res
+          .status(400)
+          .json({ error: "Maximum of 5 images allowed per circuit." });
+      }
+    }
+
+    //! ตั้งค่า images ใน updateOps
+    if (!updateOps.$set) updateOps.$set = {};
+    updateOps.$set.images = finalImages;
+
+    const validFields = Object.keys(Circuit.schema.obj);
+    for (const key of Object.keys(updateData)) {
+      if (
+        validFields.includes(key) &&
+        key !== "images" &&
+        key !== "thumbnail" &&
+        key !== "removeImages" &&
+        key !== "removeThumbnail"
+      ) {
+        if (!updateOps.$set) updateOps.$set = {};
+        updateOps.$set[key] = updateData[key];
+      }
+    }
+
+    const updatedCircuit = await Circuit.findByIdAndUpdate(id, updateOps, {
+      new: true,
+      runValidators: true,
+    });
+
     res.json(updatedCircuit);
   } catch (err) {
+    console.error("Update error:", err);
     next(err);
   }
 };

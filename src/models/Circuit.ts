@@ -1,5 +1,15 @@
 import mongoose, { Document, Schema } from "mongoose";
 
+export interface ICircuitWeather {
+  maxTemp_c: Number;
+  minTemp_c: Number;
+  maxTemp_f: Number;
+  minTemp_f: Number;
+  avgTemp_c: Number;
+  avgTemp_f: Number;
+  maxWind_mps: String;
+  chanceOfRain: Number;
+}
 export interface ICircuit extends Document {
   name: string;
   location_coords: {
@@ -9,16 +19,7 @@ export interface ICircuit extends Document {
   location_url: string;
   length_km: Number;
   type: string;
-  weather_daily: {
-    maxTemp_c: Number;
-    minTemp_c: Number;
-    maxTemp_f: Number;
-    minTemp_f: Number;
-    avgTemp_c: Number;
-    avgTemp_f: Number;
-    maxWind_mps: Number;
-    chanceOfRain: Number;
-  };
+  weather_daily: ICircuitWeather,
   images: string[];
   thumbnail: string;
   isDelete?: boolean;
@@ -41,7 +42,7 @@ const CircuitSchema: Schema = new Schema<ICircuit>({
   },
   type: {
     type: String,
-    enum: ["Automotive", "Kart"],
+    enum: ["Automotive", "Kart", "Automotive & Kart"],
     required: true,
   },
   location_url: {
@@ -57,17 +58,17 @@ const CircuitSchema: Schema = new Schema<ICircuit>({
     },
   },
   weather_daily: {
-    maxTemp_c: {type: Number, default: 0},
-    minTemp_c: {type: Number, default: 0},
-    maxTemp_f: {type: Number, default: 0},
-    minTemp_f: {type: Number, default: 0},
-    avgTemp_c: {type: Number, default: 0},
-    avgTemp_f: {type: Number, default: 0},
-    maxWind_mps: {type: Number, default: 0},
-    chanceOfRain: {type: Number, default: 0},
+    maxTemp_c: { type: Number, default: 0 },
+    minTemp_c: { type: Number, default: 0 },
+    maxTemp_f: { type: Number, default: 0 },
+    minTemp_f: { type: Number, default: 0 },
+    avgTemp_c: { type: Number, default: 0 },
+    avgTemp_f: { type: Number, default: 0 },
+    maxWind_mps: { type: String, default: 0 },
+    chanceOfRain: { type: Number, default: 0 },
   },
-  images: {type: [String], default:[], required: true},
-  thumbnail: {type: String, required: true},
+  images: { type: [String], default: [], required: true },
+  thumbnail: { type: String, required: true },
   isDelete: { type: Boolean, default: false },
   deleteAt: { type: Date },
   updated_at: { type: Date, default: Date.now },
