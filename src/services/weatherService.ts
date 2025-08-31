@@ -8,7 +8,6 @@ const BASE_URL = "http://api.weatherapi.com/v1";
 
 export const updateWeatherService = async (): Promise<void> => {
   const circuits = await Circuit.find();
-  console.log("Circuits: ", circuits);
 
   for (const circuit of circuits) {
     const { lat, lon } = circuit.location_coords;

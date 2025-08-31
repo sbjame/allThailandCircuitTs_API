@@ -1,12 +1,17 @@
 import nodeCron from "node-cron";
 import { updateWeatherService } from "../services/weatherService";
 
-async function startWeatherCron() {
+function startWeatherCron() {
   nodeCron.schedule(
     "0 9 * * *",
     async () => {
-      console.log("Running daily auto weather update...");
-      await updateWeatherService();
+        console.log("Running daily auto weather update...");
+        try{
+            await updateWeatherService();
+            console.log("Auto weather update completed.")
+        } catch(err) {
+            console.error("Auto weather update failed:", err)
+        }
     },
     {
       timezone: "Asia/Bangkok",
@@ -16,7 +21,12 @@ async function startWeatherCron() {
 
 async function manualWeatherUpdate() {
   console.log("Running manual weather update...");
-  await updateWeatherService();
+  try{
+      await updateWeatherService();
+    console.log("Manual weather update completed.")
+  } catch(err) {
+    console.error("Manual weather update filed:", err)
+  }
 }
 
 export { startWeatherCron, manualWeatherUpdate };
