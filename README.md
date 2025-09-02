@@ -49,7 +49,7 @@ Then open http://localhost:5000 in your browser.
 ```
 
 ## Usage
-/api
-/api/circuit (GET) - Read all Circuit data
+- /api
+- /api/circuit (GET) - Read all Circuit data
 
 ## Project Struture
