@@ -49,20 +49,7 @@ Then open http://localhost:5000 in your browser.
 ```
 
 ## Usage
+/api
+/api/circuit (GET) - Read all Circuit data
 
 ## Project Struture
-├── src/
-│   ├── api/
-│   ├── asset/
-│   ├── feature/
-│   ├── hooks/
-│   ├── shared/
-│   ├── App.css
-│   ├── App.jsx
-│   ├── index.css
-│   ├── main.jsx
-│   └── store.js
-├── package-lock.json
-├── package.json
-├── tsconfig.json
-└── README.md
