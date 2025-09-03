@@ -105,7 +105,6 @@ npm start
 
 ## Project Struture
 ```text
-<pre>
 src/
 ├── app.ts              // Main app setup
 ├── server.ts           // Server entry point
@@ -117,5 +116,4 @@ src/
 ├── routes/             // Express routes
 ├── services/           // Weather service
 └── utils/              // Cloudinary helper
-</pre>
 ```
