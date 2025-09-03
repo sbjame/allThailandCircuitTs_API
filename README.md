@@ -81,13 +81,12 @@ WEATHER_API_KEY=your_weather_api_key
 
 ### Running Locally
 ```bash
-# Development
+# Build
+tsc
+
+# Running Locally
 npm run dev
 Then open http://localhost:5000 in your browser.
-
-# Build & Production
-npm run build
-npm start
 ```
 
 ## API Endpoints
