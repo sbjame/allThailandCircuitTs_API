@@ -76,7 +76,7 @@ npm start
 - POST /api/users/register → Register new user
 - POST /api/users/login → Login and receive token
 
-###Weather
+### Weather
 - GET /api/weather → Manual update weather for a circuit
 - (cron job automatically updates weather in DB)
 
