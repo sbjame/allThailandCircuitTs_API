@@ -55,11 +55,11 @@ npm install
 ```
 ### Running Locally
 ```bash
-Development
+#Development
 npm run dev
 Then open http://localhost:5000 in your browser.
 
-Build & Production
+#Build & Production
 npm run build
 npm start
 ```
