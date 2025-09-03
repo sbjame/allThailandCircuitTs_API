@@ -100,7 +100,7 @@ npm start
 - POST /api/users/login → Login and receive token
 
 ### Weather
-- GET /api/weather → Manual update weather for a circuit
+- GET /api/weather/update → Manual update weather for a circuit
 - (cron job automatically updates weather in DB)
 
 ## Project Struture
