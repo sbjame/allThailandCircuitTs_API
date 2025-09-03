@@ -104,14 +104,18 @@ npm start
 - (cron job automatically updates weather in DB)
 
 ## Project Struture
+```text
+<pre>
 src/
-├── app.ts              # Main app setup
-├── server.ts           # Server entry point
-├── config/             # Configurations (env, MongoDB)
-├── controllers/        # Business logic (circuit, user, weather)
-├── cron/               # Scheduled jobs (weather updates)
-├── middlewares/        # Auth, error handler, file upload
-├── models/             # Mongoose schemas
-├── routes/             # Express routes
-├── services/           # Weather service
-└── utils/              # Cloudinary helper
+├── app.ts              // Main app setup
+├── server.ts           // Server entry point
+├── config/             // Configurations (env, MongoDB)
+├── controllers/        // Business logic (circuit, user, weather)
+├── cron/               // Scheduled jobs (weather updates)
+├── middlewares/        // Auth, error handler, file upload
+├── models/             // Mongoose schemas
+├── routes/             // Express routes
+├── services/           // Weather service
+└── utils/              // Cloudinary helper
+</pre>
+```
