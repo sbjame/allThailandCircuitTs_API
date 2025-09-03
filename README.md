@@ -7,7 +7,7 @@
 ## Table of Contents
 - [About](#about)
 - [Features](#features)
-- [Technologies](#technologies)
+- [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -32,7 +32,7 @@ It provides endpoints for circuits, users, and weather services, supporting auth
 - Centralized error handling middleware
 - MongoDB connection with Mongoose
 
-## Technologies
+## Tech Stack
 - Runtime: Node.js
 - Language: TypeScript
 - Framework: Express.js
