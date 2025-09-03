@@ -71,7 +71,7 @@ CLOUDINARY_API_SECRET=your_api_secret
 
 #### Weather API (e.g., OpenWeatherMap)
 WEATHER_API_KEY=<your_weather_api_key> (from https://www.weatherapi.com)
-```Bash
+```
 
 ### Running Locally
 ```bash
