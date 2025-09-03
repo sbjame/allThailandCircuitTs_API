@@ -94,16 +94,16 @@ npm start
 ### Circuits
 - GET /api/circuits → Get all circuits
 - GET /api/circuits/:id → Get a single circuit
-- POST /api/circuits → Create a circuit
-- PATCH /api/circuits/:id → Update a circuit
-- DELETE /api/circuits/:id → Soft delete a circuit
+- POST /api/circuits → Create a circuit (Required Auth)
+- PATCH /api/circuits/:id → Update a circuit (Required Auth)
+- DELETE /api/circuits/:id → Soft delete a circuit (Required Auth)
   
 ### Users
 - POST /api/users/register → Register new user
 - POST /api/users/login → Login and receive token
 
 ### Weather
-- GET /api/weather/update → Manual update weather for a circuit
+- GET /api/weather/update → Manual update weather for a circuit (Required Auth)
 - (cron job automatically updates weather in DB)
 
 ## Project Struture
