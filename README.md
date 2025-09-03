@@ -1,8 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](https://opensource.org/licenses/MIT)
 
 # Thailand Circuit Gps Api
-This project is a Node.js + TypeScript RESTful API for managing information about racing circuits in Thailand along with weather data integration.
-It provides endpoints for circuits, users, and weather services, supporting authentication, file uploads, and scheduled background jobs.
 
 [Demo](https://thailandcircuitgpsapi.onrender.com)
 
@@ -21,7 +19,8 @@ It provides endpoints for circuits, users, and weather services, supporting auth
 - [Project Structure](#project-structure)
 
 ## About
-This project showcases an Node.js backend built with TypeScript + MongoDB and Exernal weather api
+This project is a Node.js + TypeScript RESTful API for managing information about racing circuits in Thailand along with weather data integration.
+It provides endpoints for circuits, users, and weather services, supporting authentication, file uploads, and scheduled background jobs.
 
 ## Features
 - Circuit management (CRUD for Thailand racing circuits)
@@ -66,14 +65,14 @@ npm start
 ```
 
 ## API Endpoints
-###Circuits
+### Circuits
 - GET /api/circuits → Get all circuits
 - GET /api/circuits/:id → Get a single circuit
 - POST /api/circuits → Create a circuit
 - PATCH /api/circuits/:id → Update a circuit
 - DELETE /api/circuits/:id → Soft delete a circuit
   
-###Users
+### Users
 - POST /api/users/register → Register new user
 - POST /api/users/login → Login and receive token
 
