@@ -54,21 +54,21 @@ cd ThailandCircuitGpsApi
 npm install
 ```
 ### Environment Variables
-# Server
+#### Server
 PORT=5000
 
-# Database
+#### Database
 MONGODB_URI=your_mongodb_uri (from https://www.mongodb.com)
 
-# Authentication
+#### Authentication
 TOKEN_KEY=your_token_key
 
-# Cloudinary (for image/file uploads, from https://cloudinary.com/home)
+#### Cloudinary (for image/file uploads, from https://cloudinary.com/home)
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 
-# Weather API (e.g., OpenWeatherMap)
+#### Weather API (e.g., OpenWeatherMap)
 WEATHER_API_KEY=<your_weather_api_key> (from https://www.weatherapi.com)
 
 ### Running Locally
