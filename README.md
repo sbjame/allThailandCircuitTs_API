@@ -10,7 +10,7 @@
 - [Technologies](#technologies)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Environment](#environment)
+  - [Environment Variables](#environment)
   - [Installation](#installation)
   - [Running Locally](#running-locally)
 - [API Endpoints](#apiendpoint)
