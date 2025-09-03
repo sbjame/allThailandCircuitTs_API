@@ -10,6 +10,7 @@
 - [Technologies](#technologies)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
+  - [Environment](#environment)
   - [Installation](#installation)
   - [Running Locally](#running-locally)
 - [API Endpoints](#apiendpoint)
@@ -53,21 +54,23 @@ git clone [https://github.com/sbjame/ThailandCircuitGpsApi.git](https://github.c
 cd ThailandCircuitGpsApi
 npm install
 ```
+
 ### Environment Variables
 [Database](https://www.mongodb.com)
 [Cloudinary](https://cloudinary.com/home)
 [Weather API](https://www.weatherapi.com)
+
 ```bash
-#### Server
+# Server
 PORT=5000
 
-#### Database
+# Database
 MONGODB_URI=your_mongodb_uri
 
-#### Authentication
+# Authentication
 TOKEN_KEY=your_token_key
 
-#### Cloudinary (for image/file uploads)
+# Cloudinary (for image/file uploads)
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
@@ -78,11 +81,11 @@ WEATHER_API_KEY=your_weather_api_key
 
 ### Running Locally
 ```bash
-#Development
+# Development
 npm run dev
 Then open http://localhost:5000 in your browser.
 
-#Build & Production
+# Build & Production
 npm run build
 npm start
 ```
