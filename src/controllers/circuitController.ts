@@ -10,7 +10,7 @@ export const getCircuit = async (
   next: NextFunction
 ) => {
   try {
-    const circuits = await Circuit.find({ isDelete: { $ne: true } });
+    const circuits = await Circuit.find({ isDelete: false});
     res.json(circuits);
   } catch (err) {
     next(err);
