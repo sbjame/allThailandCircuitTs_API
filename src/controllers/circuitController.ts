@@ -10,7 +10,10 @@ export const getCircuit = async (
   next: NextFunction
 ) => {
   try {
-    const circuits = await Circuit.find({ isDelete: false});
+    const circuits = await Circuit.find({ isDelete: false });
+    res.set("Cache-Control", "no-store, no-cache, max-age=0, must-revalidate");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
     res.json(circuits);
   } catch (err) {
     next(err);
